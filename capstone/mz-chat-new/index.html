@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>My Chat</title>
+        <style>
+            /* #chats {
+                border: 2px solid red;
+                width: 50%;
+                height: 10%;
+                overflow: scroll;
+            } */
+        </style>
+
+        <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage-compat.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete"
+        />
+    </head>
+
+    <style>
+        div {
+            display: flex;
+        }
+
+        #chats {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        #chats > button {
+            width: 20%;
+        }
+    </style>
+
+    <body>
+        <!-- <div id="message">
+<p id="msg"></p>
+        </div> -->
+
+        <!-- search features through msg-->
+        <div id='search-container'>
+            <input type="text" id='search' placeholder="Search with text/messsgae">
+            <button id="search-btn">search</button>
+            <button id="clear-btn">clear</button>
+        </div>
+
+        <!--update once with edit label-->
+        <div id="chats"></div>
+
+        <label for="user-name">Name</label
+        ><input
+            type="text"
+            name="user-name"
+            id="user-name"
+            value=""
+            placeholder="Name"
+        />
+        <label for="user-text">Message</label
+        ><input
+            type="text"
+            name="user-text"
+            id="user-text"
+            value=""
+            placeholder="message"
+            required
+        />
+        <label for="uploadMedia">Attach document</label>
+        <input type="file" name="" id="uploadMedia" typeof="png/jpeg">
+        <!--<button id="btn">send</button>-->
+        <button id="btn">send</button>
+
+        <script type="module">
+            import {firebaseConfig} from "./config.js";
+            import {addMsg} from "./addFunction.js";
+            import {Upload} from "./upload.js";
+            import {getMsg} from "./getFunction.js";
+            import {updateMsg} from "./updatefunction.js";
+
+            firebase.initializeApp(firebaseConfig);
+
+            let btn = document.getElementById("btn");
+            let para = document.getElementById("msg");
+            let docId = null;
+
+
+            // adding message
+            btn.addEventListener("click", async () => {
+            console.log("clicked");
+
+            let name = document.getElementById("user-name").value || "Guest";
+            let text = document.getElementById("user-text").value;
+            let mediaFile = document.getElementById("uploadMedia")?.files[0];
+
+            console.log("current id ", docId);
+            await Upload(mediaFile)
+            if (docId) {
+            updateMsg(docId, name, text);
+            docId = null;
+            } else {
+
+            await addMsg(name, text);
+
+            }
+
+            document.getElementById("user-name").value = "";
+            document.getElementById("user-text").value = "";
+            });
+
+            // search
+            document.getElementById('search-btn').addEventListener('click', async () => {
+            // get the search text
+            let searchValue = document.getElementById('search').value;
+            console.log('inside search')
+            let searchInLowerCase = searchValue.toLowerCase();
+            let searchInUpperCase = searchValue.toUpperCase();
+
+            try {
+            let snap = await firebase.firestore().collection('mz-chat').where('text', '>=', searchInLowerCase).where('text', '<=', searchInLowerCase + '\uf8ff').get()
+            if (!snap.empty) {
+            let chatContainer = document.getElementById('chats');
+            chatContainer.innerHTML = '';
+
+            //console.log('We got the snap here: ', snap.data())
+
+            snap.forEach((docs) => {
+            console.log(`${docs.data().name}:${docs.data().text}`);
+
+            let newPTag = document.createElement('p');
+            newPTag.innerText = `${docs.data().name}:${docs.data().text}`;
+            chatContainer.appendChild(newPTag);
+
+            })
+            } else {
+            let chatContainer = document.getElementById('chats');
+            chatContainer.innerHTML = '';
+
+            let newPTag = document.createElement('p');
+            newPTag.innerText = `No Message Found!`;
+            chatContainer.appendChild(newPTag);
+            }
+            } catch (e) {
+            console.log(e)
+
+            }
+            })
+
+            // clear
+            document.getElementById('clear-btn').addEventListener('click', () => {
+            document.getElementById('chats').innerHTML = '';
+            getMsg();
+            })
+            getMsg();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,6 @@
+.env
+./auth/.env
+./capstone/em-chat/.env
+./capstone/jh-chat/.env
+./capstone/mz-chat-new/.env
+./firestore/.env   

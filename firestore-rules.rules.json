@@ -1,0 +1,20 @@
+{
+	"rules":{
+		"$uid":{
+			"balance":{
+				".write":"auth !=null && auth.uid==$uid && data.exists() && newData.isNumber && newData.val()>data.val() && newData+data.val() <= 2000 ",
+			".read":"auth != null && auth.token.role == 'TC' "
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+

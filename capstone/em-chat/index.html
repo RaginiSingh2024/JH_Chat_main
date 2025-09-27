@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Chat</title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete"
+    />
+  </head>
+
+  <body>
+    <div id="chats"></div>
+
+    <label for="user-name">Name</label
+    ><input
+      type="text"
+      name="user-name"
+      id="user-name"
+      value=""
+      placeholder="Name"
+    />
+    <label for="user-text">Message</label
+    ><input
+      type="text"
+      name="user-text"
+      id="user-text"
+      value=""
+      placeholder="message"
+    />
+    <button id="btn">send</button>
+
+    <script type="module">
+      import { firebaseConfig } from "./config.js";
+      import { myfunction } from "./functions.js";
+
+      firebase.initializeApp(firebaseConfig);
+
+      let btn = document.getElementById("btn");
+      let para = document.getElementById("msg");
+
+      let golbalUid = null;
+
+      // adding message
+      btn.addEventListener("click",async () => {
+        console.log("clicked");
+
+        // inputs
+        let name = document.getElementById("user-name").value || "Guest";
+        let text = document.getElementById("user-text").value;
+
+        console.log(golbalUid);
+        if (golbalUid){
+            await myfunction.updateMsg(name, text,golbalUid)
+        }else {
+           await myfunction.addMsg(name, text)
+        }
+
+
+        document.getElementById("user-name").value = "";
+        document.getElementById("user-text").value = "";
+      });
+
+      myfunction.getMsg();
+    </script>
+  </body>
+</html>

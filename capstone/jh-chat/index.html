@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- firebase app -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+    <!-- firestore -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=chevron_right"
+    />
+  </head>
+
+  <body>
+    <div>
+      <!-- get user input -->
+      <input
+        type="text"
+        name="message"
+        id="msg"
+        placeholder="typing..."
+        value=""
+        required
+      />
+      <button id="send-msg">
+        send
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+
+      <div id="chat"></div>
+    </div>
+
+    <script type="module">
+      // config firebase
+      import { firebaseConfig } from "./config.js";
+      import { getMsg } from "./functions.js";
+      import { deleteMessage } from "./delete.js";
+
+      // start/initialize the firebase app
+      firebase.initializeApp(firebaseConfig);
+
+      // get button
+      let bhejDo = document.getElementById("send-msg");
+
+      // send msg function
+      bhejDo.addEventListener("click", async () => {
+        // getting user ka input value
+        let message = document.getElementById("msg").value;
+
+        try {
+          let result = await firebase
+            .firestore()
+            .collection("jh-chat")
+            .add({ message });
+          console.log("added!");
+        } catch (e) {
+          console.log(`error while sending message! ${e}`);
+        }
+
+        document.getElementById("msg").value = "";
+      });
+
+      getMsg();
+    </script>
+  </body>
+</html>

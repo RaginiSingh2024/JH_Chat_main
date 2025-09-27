@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
+  </head>
+  <body>
+    <h1 id="welcome"></h1>
+    <button id="logoutBtn">Logout</button>
+    <script type="module">
+      import { firebaseConfig } from "./config.js";
+
+      firebase.initializeApp(firebaseConfig);
+
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          const name = user.displayName || user.email;
+          document.getElementById("welcome").textContent = `Welcome, ${name}!`;
+        } else {
+          window.location.href = "./";
+        }
+      });
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            window.location.href = "./";
+          });
+      });
+    </script>
+  </body>
+</html>

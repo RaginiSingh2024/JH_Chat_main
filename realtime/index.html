@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Realtime</title>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database-compat.js"></script>
+  </head>
+  <body>
+    <script type="module">
+      import { firebaseConfig } from "./config.js";
+      import {
+        getDocs,
+        getSingleDoc,
+        createDocs,
+        updateDocs,
+        deleteDocs,
+      } from "./functions.js";
+
+      firebase.initilizaeApp(firebaseConfig);
+
+      window.api = functionObject;
+    </script>
+  </body>
+</html>

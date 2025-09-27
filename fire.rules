@@ -1,0 +1,12 @@
+rule_version = '2';
+service cloud.firestore{
+	match /databases/{database}/documents {
+match /{donors}/{uid}{
+	allow read: if auth != null && resource.data.eligible == true
+}
+
+match /{request}/{uid}{
+
+	}
+}
+}

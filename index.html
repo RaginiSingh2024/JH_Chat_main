@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta
+      http-equiv="Access-Control-Allow-Methods"
+      content="GET, POST, PUT, DELETE, OPTIONS"
+    />
+    <meta
+      http-equiv="Access-Control-Allow-Headers"
+      content="Origin, Content-Type, X-Auth-Token"
+    />
+    <title>Document</title>
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+    <!-- storage -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <input type="file" name="" id="file" accept="jpeg/png" />
+    <button id="uploadBtn">Upload</button>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: process.env.FIREBASE_API_KEY,
+        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+        databaseURL: process.env.FIREBASE_DATABASE_URL,
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+        appId: process.env.FIREBASE_APP_ID,
+      };
+
+      firebase.initializeApp(firebaseConfig);
+
+      // get the btn
+      let btn = document.getElementById("uploadBtn");
+      btn.addEventListener("click", async () => {
+        let file = document.getElementById("file").files[0];
+        await uploadMediaFile(file);
+      });
+
+      async function uploadMediaFile(file) {
+        try {
+          // TODO: Give ref to following: Bucket, Folder, File
+          const bucketRef = firebase.storage().ref();
+          const folderRef = bucketRef.child("em-profile");
+          const fileRef = folderRef.child(file.name);
+          console.log(fileRef);
+          console.log(file.name);
+          await fileRef.put(file);
+          getDownloadURL();
+        } catch (e) {}
+      }
+    </script>
+  </body>
+</html>

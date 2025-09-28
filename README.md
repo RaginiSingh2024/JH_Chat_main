@@ -44,9 +44,9 @@ JH_Chat_main/
 Create `.env` files in the following directories with your Firebase configuration:
 
 - `./auth/.env`
-- `./capstone/em-chat/.env`
+`
 - `./capstone/jh-chat/.env`
-- `./capstone/mz-chat-new/.env`
+
 - `./firestore/.env`
 
 Required environment variables:

@@ -8,9 +8,9 @@ A Firebase-based chat application with multiple components and cloud functions.
 JH_Chat_main/
 ├── auth/                    # Authentication components
 ├── capstone/               # Capstone project implementations
-│   ├── em-chat/           # EM Chat implementation
+│           
 │   ├── jh-chat/           # JH Chat implementation
-│   └── mz-chat-new/       # MZ Chat (new version)
+│     
 ├── firestore/             # Firestore database configurations
 ├── jh-functions/          # Firebase Cloud Functions for JH
 ├── play-functions/        # Playground/test Firebase Functions
